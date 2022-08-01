@@ -1,0 +1,8 @@
+var a = 5
+const l = "string"
+let r = true
+let g = false
+let str = "5"
+let num = 7
+if (a > 1) {num + a}
+7 - 4
