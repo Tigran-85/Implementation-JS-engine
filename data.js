@@ -35,6 +35,8 @@ for (let i = 0; i < rows.length; i++) {
     
 };
 
+const ifsArray = rows.filter(t => t.startsWith('if'));
+
 const varArray = rowArray.filter(t => t[2] === '=');
         
 for (let j = 0; j < varArray.length; j++) {
@@ -65,5 +67,6 @@ for (const key in vars) {
 
 module.exports = {
     types, reservedNames, variables, varNames, rows, rowArray, 
-    varArray, varTypes, varNames, vars, arithmeticObj, cpmOperators
+    varArray, varTypes, varNames, vars, arithmeticObj, cpmOperators,
+    ifsArray
 };

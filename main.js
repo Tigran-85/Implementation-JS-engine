@@ -53,9 +53,9 @@ for (let i = 0; i < rowArray.length; i++) {
     };
 
     //check syntax for <if> operator
-
+    
     if (rows[i].startsWith('if')) {
-        ifStatement();
+        ifStatement(i);
     }
 
     let varExist = rowArray[i].some(t => t === '=');
