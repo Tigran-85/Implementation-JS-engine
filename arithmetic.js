@@ -51,12 +51,11 @@ function calculate(expression, operator) {
             };
 
             if (varArray[j][1] === firstOperand) {
-                firstOperandValue = rowArray[j][rowArray[j].length - 1];
-                
+                firstOperandValue = varArray[j][varArray[j].length - 1];
             }; 
 
             if (varArray[j][1] === secondOperand) {
-                secondOperandValue = rowArray[j][rowArray[j].length - 1];
+                secondOperandValue = varArray[j][varArray[j].length - 1];
                 
             };
             

@@ -4,7 +4,5 @@ let r = true
 let g = false
 let str = "5"
 let num = 7
-if (a - 1) {num - a}
-if (5 === 5) {18 / 6}
-7 + 8
-num * 5
+for (let k = 2; k < 5; k++) {5 + a}
+if (a > 4) {5 + num}

@@ -5,6 +5,7 @@ const { types, reservedNames, variables, varNames,
 const { sum, dec, mul, division } = require('./data').arithmeticObj;     
 
 const { ifStatement } = require('./ifStatement');
+const { forStatement } = require('./forStatement');
 
 for (let i = 0; i < rowArray.length; i++) {
     
@@ -15,15 +16,6 @@ for (let i = 0; i < rowArray.length; i++) {
         };
     };
 
-    //check syntax for <for> operator
-    if (rowArray[i][0].includes('for')) {
-        if (!rowArray[i][1].startsWith('(') || !rowArray[i][1].endsWith(')')
-            || !rowArray[i][2].startsWith('{') || !rowArray[i][2].endsWith('}')
-        ) {
-            console.error('SyntaxError');
-            return;
-        };
-    };
 
                                         // Arithmetic 
 
@@ -56,23 +48,35 @@ for (let i = 0; i < rowArray.length; i++) {
     
     if (rows[i].startsWith('if')) {
         ifStatement(i);
-    }
+    };
 
-    let varExist = rowArray[i].some(t => t === '=');
+    //check syntax for <for> operator
+    if (rows[i].startsWith('for')) {
+        forStatement(i)
+        // if (!rowArray[i][1].startsWith('(') || !rowArray[i][1].endsWith(')')
+        //     || !rowArray[i][2].startsWith('{') || !rowArray[i][2].endsWith('}')
+        // ) {
+        //     console.error('SyntaxError');
+        //     return;
+        // };
+    };
 
+    let varExist = rowArray[i][2] === '=';
+    
     // validate variables 
     if (varExist) {
-        
+
         // check if dublicate exist
 
-        let arr = varNames.filter( function foo(value, index, array) {
+        const dublicates = varNames.filter(function (value, index, array) {
             return array.indexOf(value) !== index;
-          });
-        if (arr.length) {
-            console.error(`Dublicate variable name, variable ${arr[i]} is already exist`);
+        });
+
+        if (dublicates.length) {
+            console.error(`Dublicate variable name, variable ${dublicates[i]} is already exist`);
             return;
         };
-
+        
         // check syntax
         if (!variables.includes(rowArray[i][0])) {
             console.error(`Syntax error: Unexpected Identifier ${rowArray[i][0]}`);
