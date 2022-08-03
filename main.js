@@ -52,13 +52,7 @@ for (let i = 0; i < rowArray.length; i++) {
 
     //check syntax for <for> operator
     if (rows[i].startsWith('for')) {
-        forStatement(i)
-        // if (!rowArray[i][1].startsWith('(') || !rowArray[i][1].endsWith(')')
-        //     || !rowArray[i][2].startsWith('{') || !rowArray[i][2].endsWith('}')
-        // ) {
-        //     console.error('SyntaxError');
-        //     return;
-        // };
+        forStatement(i);
     };
 
     let varExist = rowArray[i][2] === '=';
