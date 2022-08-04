@@ -5,13 +5,21 @@ const { equal, notEqual, gt, gte, lt, lte } = require('./data').cpmOperators;
 
 function forStatement(index) {
 
-    let seconfBlockFor = rows[index].slice(rows[index].indexOf('('), rows[index].indexOf(')') + 1);
-    let parentasesContain = seconfBlockFor.slice(1, -1);
-    let parentasesContainExpressions = parentasesContain.split(';');
-    let parentasesContainExpressionStart = parentasesContainExpressions[0];
-    let parentasesContainExpressionStartTokens = parentasesContainExpressionStart.split(' ');
+    const seconfBlockFor = rows[index].slice(rows[index].indexOf('('), rows[index].indexOf(')') + 1);
+    const parentasesContain = seconfBlockFor.slice(1, -1);
+
+    if (!parentasesContain.split(' ')[3].endsWith(";") || !parentasesContain.split(' ')[6].endsWith(";")) {
+        throw new Error('you missed semicolon')
+    };
+
+    const parentasesContainExpressions = parentasesContain.split(';');
+    const parentasesContainExpressionStart = parentasesContainExpressions[0];
+    const parentasesContainExpressionStartTokens = parentasesContainExpressionStart.split(' ');
     let parentasesContainExpressionStartCounterValue = parentasesContainExpressionStartTokens.at(-1);
-    let parentasesContainExpressionsEnd = parentasesContainExpressions[2].trimStart().slice(1).trimStart();
+    let parentasesContainExpressionsEnd = parentasesContainExpressions[2].trimStart().slice(parentasesContainExpressionStartTokens[1].length).trimStart();
+    const secondVariable = parentasesContainExpressions[1].split(' ')[1];
+    const thirdVariable = parentasesContainExpressions[2].trimStart().slice(0, -2);
+
     if (parentasesContainExpressionsEnd === '++') {
         parentasesContainExpressionsEnd = '+ 1'
     };
@@ -19,13 +27,14 @@ function forStatement(index) {
     if (parentasesContainExpressionsEnd === '--') {
         parentasesContainExpressionsEnd = '- 1'
     };
-   
-    let parentasesContainConditionExpression = parentasesContainExpressions[1].trimStart();
+
+    const parentasesContainConditionExpression = parentasesContainExpressions[1].trimStart();
+
     varArray.push(parentasesContainExpressionStartTokens);
-    varNames.push(parentasesContainExpressionStartTokens[1]);
-    let thirdBlockFor = rows[index].slice(rows[index].indexOf('{'), rows[index].indexOf('}') + 1);
-    let bracketContain = thirdBlockFor.slice(1, -1);
-    let bracketSign = bracketContain.split(' ')[1];
+
+    const thirdBlockFor = rows[index].slice(rows[index].indexOf('{'), rows[index].indexOf('}') + 1);
+    const bracketContain = thirdBlockFor.slice(1, -1);
+    const bracketSign = bracketContain.split(' ')[1];
 
     if (!seconfBlockFor.startsWith('(') || !seconfBlockFor.endsWith(')') ) {
         console.error('you missed parentases');
@@ -36,20 +45,26 @@ function forStatement(index) {
         console.error('you missed curly bracket');
         return;
     };
+    
+    if (secondVariable !== parentasesContainExpressionStartTokens[1]) {
+      throw new Error(`variable ${secondVariable} is not defined`);  
+    } else if(thirdVariable !== parentasesContainExpressionStartTokens[1]) {
+        throw new Error(`variable ${thirdVariable} is not defined`);
+    };
 
     function checkCondLoop() {
         console.log(calculate(bracketContain, bracketSign));
         if (parentasesContainExpressionsEnd[0] === sum) {
-            parentasesContainExpressionStartCounterValue = Number(parentasesContainExpressionStartCounterValue) + Number(parentasesContainExpressionsEnd[2]);
+            parentasesContainExpressionStartCounterValue = Number(parentasesContainExpressionStartCounterValue) + Number(parentasesContainExpressionsEnd.at(-1));
         };
         if (parentasesContainExpressionsEnd[0] === dec) {
-            parentasesContainExpressionStartCounterValue = Number(parentasesContainExpressionStartCounterValue) - Number(parentasesContainExpressionsEnd[2]);
+            parentasesContainExpressionStartCounterValue = Number(parentasesContainExpressionStartCounterValue) - Number(parentasesContainExpressionsEnd.at(-1));
         };
         if (parentasesContainExpressionsEnd[0] === mul) {
-            parentasesContainExpressionStartCounterValue = Number(parentasesContainExpressionStartCounterValue) * Number(parentasesContainExpressionsEnd[2]);
+            parentasesContainExpressionStartCounterValue = Number(parentasesContainExpressionStartCounterValue) * Number(parentasesContainExpressionsEnd.at(-1));
         };
         if (parentasesContainExpressionsEnd[0] === division) {
-            parentasesContainExpressionStartCounterValue = Number(parentasesContainExpressionStartCounterValue) / Number(parentasesContainExpressionsEnd[2]);
+            parentasesContainExpressionStartCounterValue = Number(parentasesContainExpressionStartCounterValue) / Number(parentasesContainExpressionsEnd.at(-1));
         };
     }
 

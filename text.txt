@@ -4,5 +4,6 @@ let r = true
 let g = false
 let str = "5"
 let num = 7
-for (let k = 2; k < 5; k++) {5 + a}
+for (let i = 0; i < 5; i++) {str + "sds"}
 if (a > 4) {5 + num}
+6 + num

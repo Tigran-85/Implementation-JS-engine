@@ -20,12 +20,7 @@ function calculate(expression, operator) {
     let isSecondOperandExist = varNames.includes(secondOperand);
     let firstOperandValue = firstOperand;
     let secondOperandValue = secondOperand;
-    let isNumberValue = !isNaN(Number(firstOperandValue)) && !isNaN(Number(secondOperandValue));
-    let isNumber = !isNaN(Number(firstOperand)) && !isNaN(Number(secondOperand));
-    const isNumberFirst = isNaN(Number(firstOperandValue));
-    const isNumberSecond = isNaN(Number(secondOperandValue));
-    const isStringFirst = firstOperandValue.startsWith('"') && firstOperandValue.endsWith('"');
-    const isStringSecond = secondOperandValue.startsWith('"') && secondOperandValue.endsWith('"');
+    
     
     for (let i = 0; i < rowArray.length; i++) {
         
@@ -47,7 +42,7 @@ function calculate(expression, operator) {
                 (secondOperandValue.startsWith('"') && !secondOperandValue.endsWith('"')) ||
                 (!secondOperandValue.startsWith('"') && secondOperandValue.endsWith('"'))    
             )) {
-                return new Error(`SyntaxError`);
+                throw new Error("SyntaxError: you missed quotes");
             };
 
             if (varArray[j][1] === firstOperand) {
@@ -60,33 +55,29 @@ function calculate(expression, operator) {
             };
             
         };
-    };    
+    };  
+    
+    let isNumberValue = !isNaN(Number(firstOperandValue)) && !isNaN(Number(secondOperandValue));
+    let isNumber = !isNaN(Number(firstOperand)) && !isNaN(Number(secondOperand));
+    const isNumberFirst = isNaN(Number(firstOperandValue));
+    const isNumberSecond = isNaN(Number(secondOperandValue));
+    const isStringFirst = firstOperandValue.startsWith('"') && firstOperandValue.endsWith('"');
+    const isStringSecond = secondOperandValue.startsWith('"') && secondOperandValue.endsWith('"');
 
     if (operator === sum) {
         if (varTypes[firstOperand] === types[0] && varTypes[secondOperand] === types[0]) {
             value = add(firstOperandValue, secondOperandValue);
             return value;
         } else if(varTypes[firstOperand] !== types[0] || varTypes[secondOperand] !== types[0]){
-
-            if (!isNumberFirst && isSecondOperandExist) {
-                value = add(firstOperand, secondOperandValue);
-                return value;
-            };
-
-            if (!isNumberSecond && isFirstOperandExist) {
-                value = add(firstOperandValue, secondOperand);
-                return value;
-            };
-
-            if (!isNumberFirst + !isNumberSecond) {
-                value = add(firstOperand, secondOperand);
+            if (!isNumberFirst && !isNumberSecond) {
+                value = add(firstOperandValue, secondOperandValue);
                 return value;
             };
             
             if (firstOperandValue?.startsWith('"') && secondOperandValue?.startsWith('"')) {
                 let newStrSecond = secondOperandValue.slice(1, -1);
                 let newStrFirst = firstOperandValue.slice(1, -1);
-                value = newStrSecond.concat(newStrFirst)
+                value = newStrFirst.concat(newStrSecond)
                 return value;
             };
         
